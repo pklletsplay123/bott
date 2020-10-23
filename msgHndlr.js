@@ -241,7 +241,7 @@ module.exports = msgHandler = async (client, message) => {
             const epbe = await fb(args[1])
             client.sendFileFromUrl(from, epbe.url, `Cuih${epbe.exts}`, epbe.capt, id)
             break*/
-        case '!creator':
+        case '!owner':
             client.sendContact(from, '6287743210434@c.us')
             break
         /*case '!ig':
@@ -566,14 +566,14 @@ module.exports = msgHandler = async (client, message) => {
             await client.sendTextWithMentions(from, `Perintah diterima, menghapus jabatan @${mentionedJidList[0]}.`)
             break
         case '!join':
-            if (args.length === 1) return client.reply(from, 'Kirim perintah *!join* linkgroup\n\nEx:\n!join https://chat.whatsapp.com/blablablablablabla', id)
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!join* linkgroup\n\nContoh nya gini Pakde:\n!join https://chat.whatsapp.com/blablablablablabla', id)
             const link = body.slice(6)
             const tGr = await client.getAllGroups()
             const minMem = 30
             const isLink = link.match(/(https:\/\/chat.whatsapp.com)/gi)
             const check = await client.inviteInfo(link)
             if (!isLink) return client.reply(from, 'Ini link? 👊🤬', id)
-            if (tGr.length > 15) return client.reply(from, 'Maaf jumlah group sudah maksimal! \n2. Chat Owner di !creator untuk mengundang bot kedalam group', id)
+            if (tGr.length > 15) return client.reply(from, 'Maaf jumlah group sudah maksimal!\nChat Owner di !creator untuk mengundang bot kedalam group', id)
             if (check.size < minMem) return client.reply(from, 'Member group tidak melebihi 30, bot tidak bisa masuk', id)
             if (check.status === 200) {
                 await client.joinGroupViaLink(link).then(() => client.reply(from, 'Bot akan segera masuk!'))
@@ -772,10 +772,31 @@ module.exports = msgHandler = async (client, message) => {
         case '!snk':
             client.reply(from, snk, id)
             break
+        case '!groupinfo':
+                if (!isGroupMsg) return client.reply(from, '❌ Command ini hanya bisa digunakan di group saja! [GROUP ONLY]', id)
+                let groupName = name
+                let groupDesc = chat.groupMetadata.desc
+                let groupPic = await client.getProfilePicFromServer(chat.id)
+                let totalMem = chat.groupMetadata.participants.length
+                let groupOwner = chat.groupMetadata.owner
+                if (groupPic === undefined) {
+                    var pfp = errorurl
+                } else {
+                    var pfp = groupPic
+                }
+                await client.sendFileFromUrl(from, pfp, 'group.jpg', `*${groupName}*\n\n👥 *Member: ${totalMem}*\n🗒️ *Deskripsi grup*:\n${groupDesc}`, null, null, true)
+                    .then(() => client.sendTextWithMentions(from, `Group owner: @${groupOwner}`))
+            break
+
+        case '!corona':
+    client.reply(from, 'Tunggu sebentar yaaa....', id)
+    const kopit = await get.get('https://api.terhambar.com/negara/Indonesia').json()
+    client.sendText(from, `DATA COVID-19 ${kopit.negara}\ntetap jaga jarak, gunakan masker, dan jangan berkerumun! 😷\\nKasus baru: ${kopit.kasus_baru}\nMeninggal baru: ${kopit.meninggal_baru}\nTotal kasus: ${kopit.total}\nTotal meninggal: ${kopit.meninggal}\nSembuh: ${kopit.sembuh}\nDalam penanganan: ${kopit.penanganan}\n\nDiupdate: ${kopit.terakhir}`)
+            break
+
         }
     } catch (err) {
         console.log(color('[ERROR]', 'red'), err)
         //client.kill().then(a => console.log(a))
     }
 }
-

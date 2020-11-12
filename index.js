@@ -4,7 +4,7 @@ const msgHandler = require('./msgHndlr')
 const options = require('./options')
 
 const start = async (client = new Client()) => {
-        console.log('[SERVER] Server Started!')
+        console.log('[SERVER] IZUMI-BOT Started!')
         // Force it to keep the current session
         client.onStateChanged((state) => {
             console.log('[Client State]', state)
@@ -29,9 +29,9 @@ const start = async (client = new Client()) => {
         client.onAddedToGroup(((chat) => {
             let totalMem = chat.groupMetadata.participants.length
             if (totalMem < 30) { 
-            	client.sendText(chat.id, `Cih member nya cuma ${totalMem}, Kalo mau invite bot, minimal jumlah mem ada 30`).then(() => client.leaveGroup(chat.id)).then(() => client.deleteChat(chat.id))
+            	client.sendText(chat.id, `Anjay member nya cuma ${totalMem}, Kalo mau invite bot kedalam grup, minimal jumlah member ada 30`).then(() => client.leaveGroup(chat.id)).then(() => client.deleteChat(chat.id))
             } else {
-                client.sendText(chat.groupMetadata.id, `Halo warga grup *${chat.contact.name}* terimakasih sudah menginvite bot ini, untuk melihat menu silahkan kirim *!help*`)
+                client.sendText(chat.groupMetadata.id, `IZUMI-BOT mendeteksi bahwa grup *${chat.contact.name}* adalah grup *ILLEGAL* karena telah memasukan bot kedalam grup yang tak dikenal\n\nGrup *${chat.contact.name}* akan direport oleh BOT sesaat lagi...\n\n untuk mengeluarkan bot dari grub *${chat.contact.name}* silahan ketik command !leave\n\nUntuk Invite BOT kedalam grup silahkan gunakan command *!join* untuk mendapatkan akses *LEGAL* silahkan gunakan key yang bisa didapat dengan mengechat owner di command *!owner*\nTerima Kasih`)
             }
         }))
 

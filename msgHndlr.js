@@ -578,25 +578,26 @@ module.exports = msgHandler = async (client, message) => {
             const tGr = await client.getAllGroups()
             const minMem = 30
             const isLink = link.match(/(https:\/\/chat.whatsapp.com)/gi)
-            if (key !== 'lGjYt4zA5SQlTDx9z9Ca') return client.reply(from, '*key* salah! silahkan chat owner bot unruk mendapatkan key yang valid', id)
+            if (key !== '27112002') return client.reply(from, '*key* salah! silahkan chat owner bot dengan mengetik *!owner* unruk mendapatkan key yang valid', id)
             const check = await client.inviteInfo(link)
             if (!isLink) return client.reply(from, 'Ini link?\nAnda cari ribut? 👊🤬', id)
-            if (tGr.length > 15) return client.reply(from, 'Maaf jumlah group sudah maksimal😅!\nchat owner bot di *!owner* untuk memasukkan bot kedalam Group', id)
+            if (tGr.length > 50) return client.reply(from, 'Maaf jumlah group sudah maksimal😅!\nchat owner bot di *!owner* untuk memasukkan bot kedalam Group', id)
             if (check.size < minMem) return client.reply(from, 'Cih member group cuman dikit gak usah undang BOT, Minimal member harus 30 orang atau lebih', id)
             if (check.status === 200) {
-                await client.joinGroupViaLink(link).then(() => client.reply(from, 'Bot akan segera masuk ke Grub anda sebentar lagi!🍻'))
+                await client.joinGroupViaLink(link).then(() => client.reply(from, 'Bot akan segera masuk ke grup anda sebentar lagi!🍻'))
             } else {
-                client.reply(from, 'Link group yang anda masukkan tidak valid!', id)
+                client.reply(from, 'Link group yang anda masukkan tidak valid anjay!', id)
             }
             break
         case '!delete':
             if (!isGroupMsg) return client.reply(from, 'Fitur ini hanya bisa di gunakan dalam group', id)
             if (!isGroupAdmins) return client.reply(from, 'Fitur ini hanya bisa di gunakan oleh admin group', id)
-            if (!quotedMsg) return client.reply(from, 'Salah!!, kirim perintah *!delete [tagpesanbot]*', id)
-            if (!quotedMsgObj.fromMe) return client.reply(from, 'Salah!!, Bot tidak bisa mengahpus chat user lain!', id)
+            if (!quotedMsg) return client.reply(from, 'Salah woy!!, kirim perintah *!delete [tagpesanbot]*', id)
+            if (!quotedMsgObj.fromMe) return client.reply(from, 'Salah woy!!, Bot tidak bisa menghapus chat user lain!', id)
             client.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
         case '!getses':
+            if (!isOwner) return client.reply(from, 'Perintah ini hanya untuk Owner bot anjay!', id)
             const sesPic = await client.getSnapshot()
             client.sendFile(from, sesPic, 'session.png', 'Neh...', id)
             break
@@ -618,7 +619,7 @@ module.exports = msgHandler = async (client, message) => {
             client.reply(from, listDaerah.result, id)
             break
         case '!listblock':
-            let hih = `This is list of blocked number\nTotal : ${blockNumber.length}\n`
+            let hih = `Berikut adalah daftar para kriminal yang telah di banned karena melanggar Syarat & Ketentuan yang berlaku \nTotal : ${blockNumber.length}\n`
             for (let i of blockNumber) {
                 hih += `➸ @${i.replace(/@c.us/g,'')}\n`
             }
@@ -743,8 +744,10 @@ module.exports = msgHandler = async (client, message) => {
             client.sendFileFromUrl(from, 'http://placekitten.com/'+q3+'/'+q2, 'neko.png','Neko ')
             break
         case '!sendto':
+        if (!isOwner) return client.reply(from, 'Perintah ini hanya untuk Owner bot anjay!', id)
             client.sendFile(from, './msgHndlr.js', 'msgHndlr.js')
             break
+        case '!ss':
         case '!url2img':
             const _query = body.slice(9)
             if (!_query.match(isUrl)) return client.reply(from, mess.error.Iv, id)

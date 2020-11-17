@@ -666,7 +666,7 @@ module.exports = msgHandler = async (client, message) => {
             const rindKiy = ditiJsin[rindIndix]
             client.sendFileFromUrl(from, rindKiy.image, 'Husbu.jpg', rindKiy.teks, id)
             break
-        case '!randomhentai':
+        case '!randomhentair':
             if (isGroupMsg) {
                 if (!isNsfw) return client.reply(from, 'Command/Perintah NSFW belum di aktifkan di group ini!', id)
                 const hentai = await randomNimek('hentai')
@@ -686,7 +686,7 @@ module.exports = msgHandler = async (client, message) => {
                 }
                 client.sendFileFromUrl(from, hentai, `Hentai${ext}`, 'Hentai!', id)
             }
-        case '!randomnsfwneko':
+        case '!randomnsfwnekor':
             if (isGroupMsg) {
                 if (!isNsfw) return client.reply(from, 'Command/Perintah NSFW belum di aktifkan di group ini!', id)
                 const nsfwneko = await randomNimek('nsfw')
@@ -715,7 +715,7 @@ module.exports = msgHandler = async (client, message) => {
             }
             client.sendFileFromUrl(from, nekonime.result, `Nekonime${ext}`, 'Nekonime!', id)
             break
-        case '!randomtrapnime':
+        case '!randomtrapnimer':
             const trap = await randomNimek('trap')
             if (trap.endsWith('.png')) {
                 var ext = '.png'
@@ -724,7 +724,7 @@ module.exports = msgHandler = async (client, message) => {
             }
             client.sendFileFromUrl(from, trap, `trapnime${ext}`, 'Trapnime!', id)
             break
-        case '!randomanime':
+        case '!randomanimer':
             const nime = await randomNimek('anime')
             if (nime.endsWith('.png')) {
                 var ext = '.png'
@@ -772,6 +772,7 @@ module.exports = msgHandler = async (client, message) => {
             client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
             break
         case '!help':
+        case '!menu':
             client.sendText(from, help)
             break
         case '!readme':
@@ -784,7 +785,7 @@ module.exports = msgHandler = async (client, message) => {
             client.reply(from, snk, id)
             break
         case '!groupinfo':
-                if (!isGroupMsg) return client.reply(from, '❌ Command ini hanya bisa digunakan di group saja! [GROUP ONLY]', id)
+                if (!isGroupMsg) return client.reply(from, '❌ Command ini hanya bisa digunakan di group saja anjay! [GROUP ONLY]', id)
                 let groupName = name
                 let groupDesc = chat.groupMetadata.desc
                 let groupPic = await client.getProfilePicFromServer(chat.id)
@@ -797,12 +798,33 @@ module.exports = msgHandler = async (client, message) => {
                 }
                 await client.sendFileFromUrl(from, pfp, 'group.jpg', `*${groupName}*\n\n👥 *Member: ${totalMem}*\n🗒️ *Deskripsi grup*:\n${groupDesc}`, null, null, true)
                     .then(() => client.sendTextWithMentions(from, `Group owner: @${groupOwner}`))
-            break
+            breaks
+
+        case '!infosurah':
+          client.reply(from, 'Siapa saja yang membaca satu huruf dari Kitabullah (Al-Quran), maka dia akan mendapatkan satu kebaikan.', id)
+          const inpo = await get.get('https://api.banghasan.com/quran/format/json/acak').json()
+          client.sendText(from, `Berikut adalah Deskripsi dari *Surah ${inpo.surat.nama}* \n\n⚜ *Nomor Surah:* ${inpo.surat.nomor}\n⚜ *Nama Surah:* ${inpo.surat.nama} (${inpo.surat.asma})\n⚜ *Jumlah Ayat:* ${inpo.surat.ayat}\n⚜ *Golongan Surah:* ${inpo.surat.type}\n⚜ *Arti Surah:* ${inpo.surat.arti}\n⚜ *Keterangan Surah:*\n ${inpo.surat.keterangan}`)
+        break
+
+        case '!randomsurah':
+          client.reply(from, 'Siapa saja yang membaca satu huruf dari Kitabullah (Al-Quran), maka dia akan mendapatkan satu kebaikan.', id)
+          const randomayat = await get.get('https://api.banghasan.com/quran/format/json/acak').json()
+          client.sendText(from, `Berikut adalah adalah potongan ayat dari *QS. ${randomayat.surat.nama} (${randomayat.acak.ar.surat}) : ${randomayat.acak.ar.ayat}* \n\n ${randomayat.acak.ar.teks}\n${randomayat.acak.id.teks} *QS. ${randomayat.surat.nama} (${randomayat.acak.ar.surat}) : ${randomayat.acak.ar.ayat}*`)
+        break
+
         case '!corona':
                 client.reply(from, 'Tunggu sebentar yaaa....', id)
                 const kopit = await get.get('https://api.terhambar.com/negara/Indonesia').json()
                 client.sendText(from, `*DATA COVID-19 DI ${kopit.negara}*\ntetap jaga jarak, gunakan masker, dan jangan berkerumun! 😷\n⚜Kasus baru: ${kopit.kasus_baru}\n⚜Meninggal baru: ${kopit.meninggal_baru}\n⚜Total kasus: ${kopit.total}\n⚜Total meninggal: ${kopit.meninggal}\n⚜Sembuh: ${kopit.sembuh}\n⚜Dalam penanganan: ${kopit.penanganan}\n\n⚜Diupdate: ${kopit.terakhir}`)
             break
+        case '!manga':
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!manga [Judul Manga]*\nContoh : *!manga Domestic no Kanojo*', id)
+            const mangak = await get.get(`https://arugaz.herokuapp.com/api/komiku?q=${body.slice(7)}`).json()
+            if (mangak.error) return client.reply(from, mangak.error, id)
+            const res_mangak = `⚜ *Info Manga:*\n\n${mangak.genre}\n${mangak.info}\n\n⚜ *Sinopsis*:\n${mangak.sinopsis}\n\n⚜ *Link Download:*\n\n${mangak.link_dl}`
+            client.sendFileFromUrl(from, mangak.thumb, 'dewabatch.jpg', res_mangak, id)
+            break
+
         }
     } catch (err) {
         console.log(color('[ERROR]', 'red'), err)

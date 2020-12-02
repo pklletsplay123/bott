@@ -173,7 +173,7 @@ module.exports = msgHandler = async (client, message) => {
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!nulis [teks]*', id)
             const nulis = encodeURIComponent(body.slice(7))
             client.reply(from, mess.wait, id)
-            let urlnulis = `https://mhankbarbar.herokuapp.com/nulis?text=${nulis}&apiKey=${apiKey}`
+            let urlnulis = `https://arugaz.herokuapp.com/api/nulis?text=${nulis}`
             await fetch(urlnulis, {method: "GET"})
             .then(res => res.json())
             .then(async (json) => {
@@ -886,6 +886,28 @@ module.exports = msgHandler = async (client, message) => {
             }
             break
 
+        case '!yo':
+            if (!isOwner) return client.reply(from, 'Ini khusus buat mainan nya owner bot, lu gak usah ikut ikutan :(', id)
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!yo [query]*\nContoh : *!halo bang*', id)
+            const yo_ = body.slice(6)
+            const lo = await get.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${yo_}&apikey=dG.GN.Jbm6GBfjb~5uCyqCOGg0hcT2sWlozA0Y5x`).json()
+            if (lo.error) {
+                client.reply(from, lo.error, id)
+            } else {
+                client.reply(from, `${lo.result}`, id)
+            }
+            break
+
+        case '!say':
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!say [query]*\nContoh : *!halo bang*', id)
+            const say_ = body.slice(6)
+            const brol = await get.get(`https://simsumi.herokuapp.com/api?text=[${say_}]&lang=[id]`).json()
+            if (brol.error) {
+                client.reply(from, brol.error, id)
+            } else {
+                client.reply(from, `${brol.success}`, id)
+            }
+            break
 
         }
     } catch (err) {

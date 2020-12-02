@@ -20,6 +20,7 @@ const nsfw_ = JSON.parse(fs.readFileSync('./lib/NSFW.json'))
 const welkom = JSON.parse(fs.readFileSync('./lib/welcome.json'))
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg')
 
+
 moment.tz.setDefault('Asia/Jakarta').locale('id')
 
 module.exports = msgHandler = async (client, message) => {
@@ -222,17 +223,17 @@ module.exports = msgHandler = async (client, message) => {
         case '!wiki':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!wiki [query]*\nContoh : *!wiki gay*', id)
             const query_ = body.slice(6)
-            const wiki = await get.get(`https://mhankbarbar.herokuapp.com/api/wiki?q=${query_}&lang=id&apiKey=${apiKey}`).json()
+            const wiki = await get.get(`https://arugaz.herokuapp.com/api/wiki?q=${query_}`).json()
             if (wiki.error) {
                 client.reply(from, wiki.error, id)
             } else {
-                client.reply(from, `➸ *Yang anda cari* : ${query_}\n\n➸ *Hasilnya* : ${wiki.result}`, id)
+                client.reply(from, `➸ *Yang anda cari* : ${query_}\n\n➸ *Hasilnya* : ${wiki.result.split('\nby: ArugaZ').join("")}`, id)
             }
             break
         case '!cuaca':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!cuaca [tempat]*\nContoh : *!cuaca Trenggalek', id)
             const tempat = body.slice(7)
-            const weather = await get.get(`https://mhankbarbar.herokuapp.com/api/cuaca?q=${tempat}&apiKey=${apiKey}`).json()
+            const weather = await get.get(`https://arugaz.herokuapp.com/api/cuaca?q=${tempat}`).json()
             if (weather.error) {
                 client.reply(from, weather.error, id)
             } else {
@@ -301,27 +302,27 @@ module.exports = msgHandler = async (client, message) => {
             break
         case '!nsfwmenu':
             if (!isNsfw) return
-            client.reply(from, '1. !randomHentai\n2. !randomNsfwNeko', id)
+            client.reply(from, '1. !cersex\n2. !vidsex', id)
             break
         case '!igstalk':
             if (args.length === 1)  return client.reply(from, 'Kirim perintah *!igStalk @username*\nConntoh *!igStalk @mia_khalifa*', id)
-            const stalk = await get.get(`https://mhankbarbar.herokuapp.com/api/stalk?username=${args[1]}&apiKey=${apiKey}`).json()
+            const stalk = await get.get(`https://arugaz.herokuapp.com/api/stalk?username=${args[1]}`).json()
             if (stalk.error) return client.reply(from, stalk.error, id)
             const { Biodata, Jumlah_Followers, Jumlah_Following, Jumlah_Post, Name, Username, Profile_pic } = stalk
-            const caps = `⚜ *Nama* : ${Name}\n⚜ *Username* : ${Username}\n⚜ *Jumlah Followers* : ${Jumlah_Followers}\n⚜ *Jumlah Following* : ${Jumlah_Following}\n⚜ *Jumlah Postingan* : ${Jumlah_Post}\n⚜ *Biodata* : ${Biodata}`
+            const caps = `⚜ *Nama* : ${Name}\n⚜ *Username* : ${Username}\n⚜ *Jumlah Followers* : ${Jumlah_Followers}\n⚜ *Jumlah Following* : ${Jumlah_Following}\n⚜ *Jumlah Postingan* : ${Jumlah_Post}\n⚜ *Biodata* : ${Biodata.split('-\nby: ArugaZ').join("")}`
             await client.sendFileFromUrl(from, Profile_pic, 'Profile.jpg', caps, id)
             break
         case '!infogempa':
-            const bmkg = await get.get(`https://mhankbarbar.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
+            const bmkg = await get.get(`https://arugaz.herokuapp.com/api/infogempa`).json()
             const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
             const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
             client.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
             break
         case '!anime':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!anime [Judul Anime]*\nContoh : *!anime Boku No Pico*', id)
-            const animek = await get.get(`https://mhankbarbar.herokuapp.com/api/kuso?q=${body.slice(7)}&apiKey=${apiKey}`).json()
+            const animek = await get.get(`https://arugaz.herokuapp.com/api/dewabatch?q=${body.slice(7)}`).json()
             if (animek.error) return client.reply(from, animek.error, id)
-            const res_animek = `⚜Title: *${animek.title}*\n\n${animek.info}\n\n⚜Sinopsis: ${animek.sinopsis}\n\n⚜Link Download:\n${animek.link_dl}`
+            const res_animek = `${animek.result}\n\n${animek.sinopsis}\n\n`
             client.sendFileFromUrl(from, animek.thumb, 'dewabatch.jpg', res_animek, id)
             break
         case '!nh':
@@ -610,7 +611,7 @@ module.exports = msgHandler = async (client, message) => {
         case '!chord':
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!chord [query]*, contoh *!chord aku bukan boneka*', id)
             const query__ = body.slice(7)
-            const chord = await get.get(`https://mhankbarbar.herokuapp.com/api/chord?q=${query__}&apiKey=${apiKey}`).json()
+            const chord = await get.get(`https://arugaz.herokuapp.com/api/chord?q=${query__}`).json()
             if (chord.error) return client.reply(from, chord.error, id)
             client.reply(from, chord.result, id)
             break
@@ -628,7 +629,7 @@ module.exports = msgHandler = async (client, message) => {
         case '!jadwalshalat':
             if (args.length === 1) return client.reply(from, '[❗] Kirim perintah *!jadwalShalat [daerah]*\ncontoh : *!jadwalShalat Trenggalek*\nUntuk list daerah kirim perintah *!listDaerah*')
             const daerah = body.slice(14)
-            const jadwalShalat = await get.get(`https://mhankbarbar.herokuapp.com/api/jadwalshalat?daerah=${daerah}&apiKey=${apiKey}`).json()
+            const jadwalShalat = await get.get(`https://arugaz.herokuapp.com/api/jadwalshalat?daerah=${daerah}`).json()
             if (jadwalShalat.error) return client.reply(from, jadwalShalat.error, id)
             const { Imsyak, Subuh, Dhuha, Dzuhur, Ashar, Maghrib, Isya } = await jadwalShalat
             arrbulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
@@ -824,6 +825,67 @@ module.exports = msgHandler = async (client, message) => {
             const res_mangak = `⚜ *Info Manga:*\n\n${mangak.genre}\n${mangak.info}\n\n⚜ *Sinopsis*:\n${mangak.sinopsis}\n\n⚜ *Link Download:*\n\n${mangak.link_dl}`
             client.sendFileFromUrl(from, mangak.thumb, 'dewabatch.jpg', res_mangak, id)
             break
+        case '!gay':
+                client.reply(from, 'Penasaran seberapa GAY sih kamu...', id)
+                const gay = await get.get('https://arugaz.herokuapp.com/api/howgay').json()
+                client.sendText(from, `\n*${gay.desc}*\n\n\n⚜Persentase GAY anda sebesar: ${gay.persen}%\n`)
+            break
+
+        case '!bucin':
+                client.reply(from, 'Gombalan maut akan segera datang...', id)
+                const cin = await get.get('https://arugaz.herokuapp.com/api/howbucins').json()
+                client.sendText(from, `\n*${cin.desc}*\nDamage Gombalan Sebesar: ${cin.persen}%\n`)
+            break
+
+        case '!cerpen':
+                client.reply(from, 'Sedang mencari cerpen yang sesuai mood kamu senpai...', id)
+                const cerpenn = await get.get('https://arugaz.herokuapp.com/api/cerpen').json()
+                client.sendText(from, `\n${cerpenn.result}\n`)
+            break
+
+        case '!cersex':
+                client.reply(from, 'Sedang mencari cerpen yang dapat memuaskan nafsumu kamu senpai...', id)
+                const cer = await get.get('https://arugaz.herokuapp.com/api/cersex1').json()
+                client.sendText(from, `\n*${cer.result.judul}*\n\n${cer.result.article}`)
+            break
+
+
+        case '!puisi':
+                client.reply(from, 'Sedang mencari puisi yang dapat melelehkan hatimu senpai...', id)
+                const puisii = await get.get('https://arugaz.herokuapp.com/api/puisi2').json()
+                client.sendText(from, `\n${puisii.result}`)
+            break
+        
+        case '!vidsex':
+                client.reply(from, 'Peringatan!!! ini adalah konten dewasa...', id)
+                const vid = await get.get('https://arugaz.herokuapp.com/api/indohot').json()
+                client.sendText(from, `*VIDEO KHUSUS 18+*\n\nJudul: ${vid.result.judul}\nGenre: ${vid.result.genre}\nDurasi Video: ${vid.result.durasi}\nLink Download: ${vid.result.url}`)
+            break
+
+
+        case '!nama':
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!nama [query]*\nContoh : *!nama izumi*', id)
+            const isi_ = body.slice(6)
+            const nama = await get.get(`https://arugaz.herokuapp.com/api/artinama?nama=${isi_}`).json()
+            if (nama.error) {
+                client.reply(from, nama.error, id)
+            } else {
+                client.reply(from, `Hai, *${isi_}* kamu adalah seorang yang ${nama.result}`, id)
+            }
+            break
+
+        case '!jatidiri':
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!nama [query]*\nContoh : *!nama izumi*', id)
+            const pas_ = body.slice(6)
+            const sip_ = body.slice(6)
+            const jodoh = await get.get(`https://arugaz.herokuapp.com/api/jodohku?nama=${pas_}&pasangan=${pas_}`).json()
+            if (jodoh.error) {
+                client.reply(from, jodoh.error, id)
+            } else {
+                client.reply(from, `Jati diri kamu yang sebenarnya adalah seorang yang ${jodoh.positif}\n\nNamun kamu memiliki kekurangan seperti ${jodoh.negatif}`, id)
+            }
+            break
+
 
         }
     } catch (err) {

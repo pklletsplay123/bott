@@ -656,7 +656,7 @@ module.exports = msgHandler = async (client, message) => {
             const loli = await get.get('https://mhankbarbar.herokuapp.com/api/randomloli').json()
             client.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'nih lolinya om\nDasar lolicon', id)
             break
-        case '!waifu':
+        case '!waifur':
             const waifu = await get.get(`https://mhankbarbar.herokuapp.com/api/waifu?apiKey=${apiKey}`).json()
             client.sendFileFromUrl(from, waifu.image, 'Waifu.jpg', `➸ Name : ${waifu.name}\n➸ Description : ${waifu.desc}\n\n➸ Source : ${waifu.source}`, id)
             break

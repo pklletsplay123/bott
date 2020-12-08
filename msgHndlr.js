@@ -200,7 +200,7 @@ module.exports = msgHandler = async (client, message) => {
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!nulis [teks]*', id)
             const nulis = encodeURIComponent(body.slice(7))
             client.reply(from, mess.wait, id)
-            let urlnulis = `https://arugaz.herokuapp.com/api/nulis?text=${nulis}`
+            let urlnulis = `https://bangandre.herokuapp.com/nulis?teks=${nulis}`
             await fetch(urlnulis, {method: "GET"})
             .then(res => res.json())
             .then(async (json) => {
@@ -264,7 +264,7 @@ module.exports = msgHandler = async (client, message) => {
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!cuaca [tempat]*\nContoh : *!cuaca Trenggalek', id)
             const tempat = body.slice(7)
-            const weather = await get.get(`https://arugaz.herokuapp.com/api/cuaca?q=${tempat}`).json()
+            const weather = await get.get(`https://alfians-api.herokuapp.com/api/cuaca?q=${tempat}`).json()
             if (weather.error) {
                 client.reply(from, weather.error, id)
             } else {
@@ -290,7 +290,7 @@ module.exports = msgHandler = async (client, message) => {
             if (!args[1].match(isUrl) && !args[1].includes('instagram.com')) return client.reply(from, mess.error.Iv, id)
             try {
                 client.reply(from, mess.wait, id)
-                const resp = await get.get(`https://mhankbarbar.herokuapp.com/api/ig?url=${args[1]}&apiKey=${apiKey}`).json()
+                const resp = await get.get(`https://alfians-api.herokuapp.com/api/ig?url=${args[1]}`).json()
                 if (resp.result.includes('.mp4')) {
                     var ext = '.mp4'
                 } else {
@@ -356,12 +356,20 @@ module.exports = msgHandler = async (client, message) => {
             const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
             client.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
             break
+        //case '!anime':
+            //if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
+            //if (args.length === 1) return client.reply(from, 'Kirim perintah *!anime [Judul Anime]*\nContoh : *!anime Boku No Pico*', id)
+            //const animek = await get.get(`https://arugaz.herokuapp.com/api/dewabatch?q=${body.slice(7)}`).json()
+            //if (animek.error) return client.reply(from, animek.error, id)
+            //const res_animek = `${animek.result}\n\n${animek.sinopsis}\n\n`
+            //client.sendFileFromUrl(from, animek.thumb, 'dewabatch.jpg', res_animek, id)
+            //break
         case '!anime':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!anime [Judul Anime]*\nContoh : *!anime Boku No Pico*', id)
-            const animek = await get.get(`https://arugaz.herokuapp.com/api/dewabatch?q=${body.slice(7)}`).json()
+            const animek = await get.get(`https://alfians-api.herokuapp.com/api/kuso?q=${body.slice(7)}`).json()
             if (animek.error) return client.reply(from, animek.error, id)
-            const res_animek = `${animek.result}\n\n${animek.sinopsis}\n\n`
+            const res_animek = `*${animek.title}*\n\n${animek.info}\n\nSinopsis: ${animek.sinopsis}\nLink Download:\n${animek.link_dl}`
             client.sendFileFromUrl(from, animek.thumb, 'dewabatch.jpg', res_animek, id)
             break
         case '!nh':
@@ -725,7 +733,7 @@ module.exports = msgHandler = async (client, message) => {
             const waifu = await get.get(`https://mhankbarbar.herokuapp.com/api/waifu?apiKey=${apiKey}`).json()
             client.sendFileFromUrl(from, waifu.image, 'Waifu.jpg', `➸ Name : ${waifu.name}\n➸ Description : ${waifu.desc}\n\n➸ Source : ${waifu.source}`, id)
             break
-        case '!husbu':
+        case '!husbur':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const diti = fs.readFileSync('./lib/husbu.json')
             const ditiJsin = JSON.parse(diti)
@@ -828,7 +836,7 @@ module.exports = msgHandler = async (client, message) => {
             const _query = body.slice(9)
             if (!_query.match(isUrl)) return client.reply(from, mess.error.Iv, id)
             if (args.length === 1) return client.reply(from, 'Kirim perintah *!url2img [web]*\nContoh *!url2img https://google.com*', id)
-            const url2img = await get.get(`https://mhankbarbar.herokuapp.com/api/url2image?url=${_query}&apiKey=${apiKey}`).json()
+            const url2img = await get.get(`https://api.apiflash.com/v1/urltoimage?access_key=12f6297102b447feb8e2aeca222f92b6&url=${_query}`).json()
             if (url2img.error) return client.reply(from, url2img.error, id)
             client.sendFileFromUrl(from, url2img.result, 'kyaa.jpg', null, id)
             break
@@ -844,7 +852,7 @@ module.exports = msgHandler = async (client, message) => {
             skya_ = skya.data
             client.reply(from, `➸ *Quotes* : ${skya_.quote}\n➸ *Character* : ${skya_.character}\n➸ *Anime* : ${skya_.anime}`, id)
             break
-        case '!meme':
+        case '!memer':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const response = await axios.get('https://meme-api.herokuapp.com/gimme/wholesomeanimemes');
             const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
@@ -955,6 +963,17 @@ module.exports = msgHandler = async (client, message) => {
                 client.sendText(from, `*VIDEO KHUSUS 18+*\n\nJudul: ${vid.result.judul}\nGenre: ${vid.result.genre}\nDurasi Video: ${vid.result.durasi}\nLink Download: ${vid.result.url}`)
             break
 
+        case '!penyegar':
+            const items = ["School Girl Japan","Japan Girl","Beautiful Japanese Girl"]
+            const cewe = items[Math.floor(Math.random() * items.length)]
+            const ewe = 'https://api.fdci.se/rep.php?gambar=' + cewe
+            axios.get(ewe)
+                .then(async (result) => {
+                    const x = JSON.parse(JSON.stringify(result.data))
+                    const cewek = x[Math.floor(Math.random() * x.length)]
+                    await client.sendFileFromUrl(from, cewek, 'penyegar.jpg', '', id)
+                })
+        break
 
         case '!nama':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
@@ -966,6 +985,32 @@ module.exports = msgHandler = async (client, message) => {
             } else {
                 client.reply(from, `Hai, *${isi_}* kamu adalah seorang yang ${nama.result}`, id)
             }
+            break
+
+        case '!call':
+            if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
+                if (!isOwner) return client.reply(from, 'Ini khusus buat mainan nya owner bot, lu gak usah ikut ikutan :(', id)
+            if (args.length === 1) return client.reply(from, 'Kirim perintah *!call [nomor target]*', id)
+            const cal_ = body.slice(6)
+            const call = await get.get(`https://alfians-api.herokuapp.com/api/spamcall?no=${cal_}`).json()
+            if (call.error) {
+                client.reply(from, call.error, id)
+            } else {
+                client.reply(from, `${call.logs}`, id)
+            }
+            break
+
+        //Sticker Converter
+        case '!st2img':
+                if (quotedMsg && quotedMsg.type == 'sticker') {
+                    const mediaData = await decryptMedia(quotedMsg)
+                    client.reply(from, `Sedamg di proses! Silahkan tunggu sebentar...`, id)
+                    const imageBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`
+                    await client.sendFile(from, imageBase64, 'imgsticker.jpg', 'Berhasil convert Sticker to Image!', id)
+                    .then(() => {
+                        console.log(`Sticker to Image Processed for ${processTime(t, moment())} Seconds`)
+                    })
+            } else if (!quotedMsg) return client.reply(from, `Format salah, silahkan tag sticker yang ingin dijadikan gambar!`, id)
             break
 
         case '!jatidiri':
@@ -1013,28 +1058,74 @@ module.exports = msgHandler = async (client, message) => {
             break
         }
         case '!ban':
-            if (!isOwner) return client.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
-            if (args.length == 0) return client.reply(from, `Untuk banned seseorang agar tidak bisa menggunakan commands\n\nCaranya ketik: \n!ban add 628xx --untuk mengaktifkan\n!ban del 628xx --untuk nonaktifkan\n\ncara cepat ban banyak digrup ketik:\n!ban @tag @tag @tag`, id)
-            if (args[0] == 'add') {
-                banned.push(args[1]+'@c.us')
+            if (!isOwner) return await client.reply(from, 'Ini khusus buat mainan nya owner bot, lu gak usah ikut ikutan :(', id)
+            if (mentionedJidList.length === 0) return await client.reply(from, 'pilih !ban add atau !ban del cuk', id)
+            if (mentionedJidList[0] === botNumber) return await client.reply(from, ind.wrongFormat(), id)
+            if (args[1] === 'add') {
+            for (let blist of mentionedJidList) {
+                banned.push(blist)
                 fs.writeFileSync('./lib/banned.json', JSON.stringify(banned))
-                client.reply(from, 'Succes banned target!')
-            } else
-            if (args[0] == 'del') {
-                let xnxx = banned.indexOf(args[1]+'@c.us')
-                banned.splice(xnxx,1)
-                fs.writeFileSync('./lib/banned.json', JSON.stringify(banned))
-                client.reply(from, 'Succes unbanned target!')
-            } else {
-             for (let i = 0; i < mentionedJidList.length; i++) {
-                banned.push(mentionedJidList[i])
-                fs.writeFileSync('./lib/banned.json', JSON.stringify(banned))
-                    client.reply(from, 'Succes ban target!', id)
-                }
             }
-            break
+                await client.reply(from, 'berhasil di banned', id)
+            } else if (args[1] === 'del') {
+                let benet = banned.indexOf(mentionedJidList[0])
+                banned.splice(benet, 1)
+                fs.writeFileSync('./lib/banned.json', JSON.stringify(banned))
+                await client.reply(from, 'berhasil di unban', id)
+            } else {
+                await client.reply(from, 'gagal', id)
+            }
+        break
 
-        }
+        case '!wallanime':
+            const itu = ["Wallpaper Anime Cute Girl", "Wallpaper Anime ", "Wallpaper Anime HD", "Anime Wallpaper"]
+            const wallnime = itu[Math.floor(Math.random() * itu.length)]
+            const nimeng = 'https://api.fdci.se/rep.php?gambar=' + wallnime
+            axios.get(nimeng)
+                .then(async (result) => {
+                    const a = JSON.parse(JSON.stringify(result.data))
+                    const nimer = a[Math.floor(Math.random() * a.length)]
+                    await client.sendFileFromUrl(from, nimer, 'penyegar.jpg', '', id)
+                })
+        break
+
+        case '!waifu':
+            const wai = ["kawaii anime girl", "waifu", "Hot Anime Girl", "Cool Anime Girl"]
+            const ifu = wai[Math.floor(Math.random() * wai.length)]
+            const cute = 'https://api.fdci.se/rep.php?gambar=' + ifu
+            axios.get(cute)
+                .then(async (result) => {
+                    const t = JSON.parse(JSON.stringify(result.data))
+                    const pict = t[Math.floor(Math.random() * t.length)]
+                    await client.sendFileFromUrl(from, pict, 'penyegar.jpg', '', id)
+                })
+        break
+
+        case '!husbu':
+            const hus = ["Hot Anime Boy", "Husbu", "Cool Anime Boys", "Anime Boy Keren"]
+            const bu = hus[Math.floor(Math.random() * hus.length)]
+            const cool = 'https://api.fdci.se/rep.php?gambar=' + bu
+            axios.get(cool)
+                .then(async (result) => {
+                    const h = JSON.parse(JSON.stringify(result.data))
+                    const mpshh = h[Math.floor(Math.random() * h.length)]
+                    await client.sendFileFromUrl(from, mpshh, 'penyegar.jpg', '', id)
+                })
+        break
+
+        case '!meme':
+            const pmeme = ["Meme Shitpost", "meme kocak", "shitpost indonesia", "wibu kocak"]
+            const njir = pmeme[Math.floor(Math.random() * pmeme.length)]
+            const shitpost = 'https://api.fdci.se/rep.php?gambar=' + njir
+            axios.get(shitpost)
+                .then(async (result) => {
+                    const q = JSON.parse(JSON.stringify(result.data))
+                    const lucu = q[Math.floor(Math.random() * q.length)]
+                    await client.sendFileFromUrl(from, lucu, 'penyegar.jpg', '', id)
+                })
+        break
+
+    }
     } catch (err) {
         console.log(color('[ERROR]', 'red'), err)
         //client.kill().then(a => console.log(a))

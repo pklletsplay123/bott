@@ -70,7 +70,7 @@ module.exports = msgHandler = async (client, message) => {
         const groupAdmins = isGroupMsg ? await client.getGroupAdmins(groupId) : ''
         const isGroupAdmins = isGroupMsg ? groupAdmins.includes(sender.id) : false
         const isBotGroupAdmins = isGroupMsg ? groupAdmins.includes(botNumber + '@c.us') : false
-        const ownerNumber = ["6287743210434@c.us"]
+        const ownerNumber = ["6287833474586@c.us"]
         const isOwner = ownerNumber.includes(sender.id)
         const isBlocked = blockNumber.includes(sender.id)
         const isNsfw = isGroupMsg ? nsfw_.includes(chat.id) : false
@@ -121,9 +121,9 @@ module.exports = msgHandler = async (client, message) => {
                     client.reply(from, mess.error.St, id)
             }
             break
-        case '!stickergif':
-        case '!stikergif':
-        case '!sgif':
+        case '!stickergiff':
+        case '!stikergiff':
+        case '!sgiff':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database IZUMI-BOT!\n Silakan daftar dengan format:\n*!register* <nama | daerah> \ncontoh:\n*!register* Yuuru | Trenggalek', id)
             if (isMedia) {
                 if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
@@ -282,7 +282,7 @@ module.exports = msgHandler = async (client, message) => {
             break
         case '!creator':
         case '!owner':
-            client.sendContact(from, '6287743210434@c.us')
+            client.sendContact(from, '6287833474586@c.us')
             break
         case '!ig':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
@@ -374,7 +374,7 @@ module.exports = msgHandler = async (client, message) => {
             break
         case '!nh':
             if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
-            if (!isOwner) return
+            //if (!isOwner) return
             //if (isGroupMsg) return client.reply(from, 'Sorry this command for private chat only!', id)
             if (args.length === 2) {
                 const nuklir = body.split(' ')[1]
@@ -1078,6 +1078,7 @@ module.exports = msgHandler = async (client, message) => {
         break
 
         case '!wallanime':
+        if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const itu = ["Wallpaper Anime Cute Girl", "Wallpaper Anime ", "Wallpaper Anime HD", "Anime Wallpaper"]
             const wallnime = itu[Math.floor(Math.random() * itu.length)]
             const nimeng = 'https://api.fdci.se/rep.php?gambar=' + wallnime
@@ -1090,6 +1091,7 @@ module.exports = msgHandler = async (client, message) => {
         break
 
         case '!waifu':
+        if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const wai = ["kawaii anime girl", "waifu", "Hot Anime Girl", "Cool Anime Girl"]
             const ifu = wai[Math.floor(Math.random() * wai.length)]
             const cute = 'https://api.fdci.se/rep.php?gambar=' + ifu
@@ -1102,6 +1104,7 @@ module.exports = msgHandler = async (client, message) => {
         break
 
         case '!husbu':
+        if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const hus = ["Hot Anime Boy", "Husbu", "Cool Anime Boys", "Anime Boy Keren"]
             const bu = hus[Math.floor(Math.random() * hus.length)]
             const cool = 'https://api.fdci.se/rep.php?gambar=' + bu
@@ -1114,6 +1117,7 @@ module.exports = msgHandler = async (client, message) => {
         break
 
         case '!meme':
+        if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
             const pmeme = ["Meme Shitpost", "meme kocak", "shitpost indonesia", "wibu kocak"]
             const njir = pmeme[Math.floor(Math.random() * pmeme.length)]
             const shitpost = 'https://api.fdci.se/rep.php?gambar=' + njir
@@ -1124,6 +1128,20 @@ module.exports = msgHandler = async (client, message) => {
                     await client.sendFileFromUrl(from, lucu, 'penyegar.jpg', '', id)
                 })
         break
+
+    	case '!pt':
+    	if (!isRegistered) return await client.reply(from, 'Nomor kamu belum terdaftar di database! Silakan daftar dengan format:\n*!register* <nama | daerah>', id)
+			if (!isRegistered) return await client.reply(from, 'Foo', id)
+		    if (args.length === 1) return await client.reply(from, 'Bar', id)
+		    const pin = body.slice(5)
+		    const xyz = `https://api.fdci.se/rep.php?gambar=${pin}`
+		    axios.get(xyz)
+		    	.then(async (res) => {
+		    		const q = JSON.parse(JSON.stringify(res.data))
+		            const rand = q[Math.floor(Math.random() * q.length)]
+		            await client.sendFileFromUrl(from, rand, `${pin}.jpg`, '', id)
+		    	})
+		break
 
     }
     } catch (err) {
